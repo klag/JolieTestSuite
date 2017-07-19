@@ -33,13 +33,13 @@ embedded {
 }
 
 inputPort ClientLocal {
-Location: "local" 
+Location: "local"
 Protocol: sodep
 Aggregates: GUI
 }
 
 inputPort Client {
-Location: ClientLocation 
+Location: ClientLocation
 Protocol: sodep
 Aggregates: GUI
 RequestResponse:
@@ -47,25 +47,25 @@ RequestResponse:
 }
 
 constants {
-  TEST_SUITE_DIRECTORY = "test_suite/"
+  TEST_SUITE_DIRECTORY = "./test_suite/"
 }
 
 main {
 	  with( init_gm ) {
 		  .location = ClientLocation;
 		  .abstract_goal = "./public/interfaces/abstractGoal.ol";
-		  .goal_directory = args[0] + TEST_SUITE_DIRECTORY
-	  };  
+		  .goal_directory = TEST_SUITE_DIRECTORY
+	  };
 	  initialize@GoalManager( init_gm );
-	  init_http.documentRootDirectory = args[0] + TEST_SUITE_DIRECTORY;
+	  init_http.documentRootDirectory = TEST_SUITE_DIRECTORY;
 	  initialize@HttpFileRetriever( init_http );
 
-	  if ( #args == 1 ) {
+	  if ( #args == 0 ) {
 		  first_goal = "init"
 	  } else {
-		  first_goal = args[ 1 ]
+		  first_goal = args[ 0 ]
 	  };
-	 	  
+
 
 	  scope( goal_execution ) {
 		  install( ExecutionFault => nullProcess);
