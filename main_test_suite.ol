@@ -46,26 +46,35 @@ RequestResponse:
   shutdown
 }
 
-constants {
-  TEST_SUITE_DIRECTORY = "test_suite/"
-}
 
 main {
+	 
+
+	  for ( i = 1, i < #args, i++ ) {
+		  if ( args[ i ] == "--trace" ) {
+			  trace = true
+		  } else {
+			  elseargs[ #elseargs ] = args[ i ]
+			  trace = false
+		  }
+	  }
+
+	  if ( #elseargs == 0 ) {
+		  first_goal = "init"
+	  } else {
+		  first_goal = elseargs[ 0 ]
+	  };
+
 	  with( init_gm ) {
 		  .location = ClientLocation;
 		  .abstract_goal = "./public/interfaces/abstractGoal.ol";
-		  .goal_directory = args[0] + TEST_SUITE_DIRECTORY
+		  .goal_directory = args[0];
+		  .trace = trace
 	  };  
 	  initialize@GoalManager( init_gm );
-	  init_http.documentRootDirectory = args[0] + TEST_SUITE_DIRECTORY;
+	  init_http.documentRootDirectory = args[0]
 	  initialize@HttpFileRetriever( init_http );
-
-	  if ( #args == 1 ) {
-		  first_goal = "init"
-	  } else {
-		  first_goal = args[ 1 ]
-	  };
-	 	  
+	  
 
 	  scope( goal_execution ) {
 		  install( ExecutionFault => nullProcess);

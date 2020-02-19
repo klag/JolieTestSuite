@@ -46,13 +46,15 @@ define __delete {
 
 init {
   initialize( request );
+  TRACING = request.trace
   global.localGUILocation = request.location;
   global.GOAL_DIRECTORY = request.goal_directory;
   global.ABSTRACT_GOAL = request.abstract_goal;
   getLocalLocation@Runtime()( global.localGoalManagerLocation );
   println@Console("GoalManager is running...")();
   install( ExecutionFault => __delete );
-  install( GoalNotFound => __delete )
+  install( GoalNotFound => __delete );
+  install( FileNotFound => __delete )
 }
 
 main {
@@ -119,7 +121,11 @@ main {
 		  };
 		  // embedding goal
 		  with( request_embed ) {
-		    .filepath = filename + ".ol";
+			if ( TRACING ) {
+				.filepath = "--trace " + filename + ".ol"
+			} else {
+		    	.filepath = filename + ".ol"
+			}
 		    .type = "Jolie"
 		  };
 		  loadEmbeddedService@Runtime( request_embed )( Goal.location );

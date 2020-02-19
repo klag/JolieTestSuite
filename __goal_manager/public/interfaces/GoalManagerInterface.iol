@@ -12,6 +12,7 @@ type InitializeRequest: void {
       .location: any
       .goal_directory: string
       .abstract_goal: string
+      .trace: bool
 }
 
 interface GoalManagerInterface {
