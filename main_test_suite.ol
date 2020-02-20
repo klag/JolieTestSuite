@@ -49,14 +49,11 @@ RequestResponse:
 
 main {
 	 
-
+	  trace = false
 	  for ( i = 1, i < #args, i++ ) {
 		  if ( args[ i ] == "--trace" ) {
 			  trace = true
-		  } else {
-			  elseargs[ #elseargs ] = args[ i ]
-			  trace = false
-		  }
+		  } 
 	  }
 
 	  if ( #elseargs == 0 ) {
