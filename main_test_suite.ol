@@ -81,7 +81,7 @@ main {
 	  
 
 	  scope( goal_execution ) {
-		  install( ExecutionFault => nullProcess);
+		  install( ExecutionFault => println@Console("TEST FAILED!" )() );
 		  install( GoalNotFound => println@Console("GoalNotFound: " + goal_execution.GoalNotFound.goal_name )() );
 		  gr.name = first_goal;
 		  goal@GoalManager( gr )( grs )

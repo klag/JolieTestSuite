@@ -63,10 +63,9 @@ main {
 	  filename = "";
 	  scope( get_goal ) {
 
-		  install( ExecutionFault => println@Console("TEST FAILED! : " + request.name )();
-					     valueToPrettyString@StringUtils( get_goal.ExecutionFault )( s );
+		  install( ExecutionFault => valueToPrettyString@StringUtils( get_goal.ExecutionFault )( s );
 					     println@Console( s )();
-					     throw( ExecutionFault, get_goal.ExecutionFault )
+					     throw( ExecutionFault, request.name + ":" + get_goal.ExecutionFault )
 		  );
 		  install( FileNotFound =>   fault.goal_name = request.name;
 					    throw( GoalNotFound, fault )
