@@ -48,14 +48,21 @@ RequestResponse:
 
 
 main {
-	 
+	  
+	  if ( #args == 0 ) {
+		  println@Console( "Usage jolie main_test_suite.ol goal_directory [ goal_name ] [ --trace ]")()
+		  throw( BadFormat )
+	  }
+	  elseargs << args
+	  goal_directory = args[ 0 ]
 	  trace = false
 	  for ( i = 1, i < #args, i++ ) {
 		  if ( args[ i ] == "--trace" ) {
 			  trace = true
+			  undef( elseargs[ i ] )
 		  } 
 	  }
-
+	  undef( elseargs[ 0 ] )
 	  if ( #elseargs == 0 ) {
 		  first_goal = "init"
 	  } else {
@@ -65,7 +72,7 @@ main {
 	  with( init_gm ) {
 		  .location = ClientLocation;
 		  .abstract_goal = "./public/interfaces/abstractGoal.ol";
-		  .goal_directory = args[0];
+		  .goal_directory = goal_directory;
 		  .trace = trace
 	  };  
 	  initialize@GoalManager( init_gm );
