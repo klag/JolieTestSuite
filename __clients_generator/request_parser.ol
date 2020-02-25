@@ -127,7 +127,7 @@ main {
 	}]
 
 	[ getTypeUndefined( request )( response ) {
-		response.row[ 0 ] = request.node_name + "= \"undefined\""
+		response.rows[ 0 ] = request.node_name + "= \"undefined\""
 	}]
 
 	[ getTypeLink( request )( response ) {
