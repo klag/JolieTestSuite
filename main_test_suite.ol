@@ -46,6 +46,11 @@ RequestResponse:
   shutdown
 }
 
+constants {
+	TMP_DIR = "__test_tmp_dir"
+}
+
+
 
 main {
 	  
@@ -79,11 +84,12 @@ main {
 	  init_http.documentRootDirectory = args[0]
 	  initialize@HttpFileRetriever( init_http );
 	  
-
+	  mkdir@File( TMP_DIR )()
 	  scope( goal_execution ) {
 		  install( ExecutionFault => println@Console("TEST FAILED!" )() );
 		  install( GoalNotFound => println@Console("GoalNotFound: " + goal_execution.GoalNotFound.goal_name )() );
 		  gr.name = first_goal;
 		  goal@GoalManager( gr )( grs )
 	  }
+	  deleteDir@File( TMP_DIR )()
 }

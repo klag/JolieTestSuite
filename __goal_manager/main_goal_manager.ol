@@ -34,13 +34,13 @@ Interfaces: GoalManagerInterface
 
 constants {
   LOCAL_ABSTRACT_GOAL = "localAbstractGoal.iol",
-  DATA_FOLDER = "data/"
+  DATA_FOLDER = "data/",
+  TMP_DIR = "./__test_tmp_dir/"
 }
 
 define __delete {
-  if ( filename != "" ) {
-      df = filename + ".ol";
-      delete@File( df )()
+  if ( new_filename != "" ) {
+      delete@File( new_filename )()
   }
 }
 
@@ -72,9 +72,7 @@ main {
 		  );
 
 		  request.client_location = global.myLocation;
-		  //rd.filename = global.ABSTRACT_GOAL;
-		  //println@Console( rd.filename )();
-		  //readFile@File( rd )( abstract );
+
 		  abstract = "include \"console.iol\"
 			      include \"string_utils.iol\"
 
@@ -112,18 +110,19 @@ main {
 		  goal_activity.content = abstract + local_abstract_goal + goal;
 
 		  filename = new;
+		  new_filename = TMP_DIR + filename + ".ol";
 		  with( wf ) {
 		    // writing goal on file system
-		    wf.filename = filename + ".ol";
+		    wf.filename = new_filename
 		    wf.content = goal_activity.content;
 		    writeFile@File( wf )( )
 		  };
 		  // embedding goal
 		  with( request_embed ) {
 			if ( TRACING ) {
-				.filepath = "--trace " + filename + ".ol"
+				.filepath = "--trace " + new_filename 
 			} else {
-		    	.filepath = filename + ".ol"
+		    	.filepath = new_filename
 			}
 		    .type = "Jolie"
 		  };
