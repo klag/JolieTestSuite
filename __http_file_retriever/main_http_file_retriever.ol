@@ -50,7 +50,7 @@ init{
 main {
 
   default( request )( response ) {
-    scope( s ) {
+    scope( sc ) {
 	//valueToPrettyString@StringUtils( request )( str );
 	//println@Console( str )();
 	install( FileNotFound => println@Console("File not found: " + request.operation )()

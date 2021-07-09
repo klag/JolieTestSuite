@@ -1,4 +1,4 @@
-include "types/role_types.iol"
+include "types/definition_types.iol"
 
 type GetRequestRequest: void {
       .types*: Type

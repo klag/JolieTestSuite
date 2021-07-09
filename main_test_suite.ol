@@ -51,26 +51,34 @@ constants {
 }
 
 main {
-	  with( init_gm ) {
-		  .location = ClientLocation;
-		  .abstract_goal = "./public/interfaces/abstractGoal.ol";
-		  .goal_directory = args[0] + TEST_SUITE_DIRECTORY
-	  };  
-	  initialize@GoalManager( init_gm );
-	  init_http.documentRootDirectory = args[0] + TEST_SUITE_DIRECTORY;
-	  initialize@HttpFileRetriever( init_http );
+	if ( #args > 0 ) {
+		with( init_gm ) {
+			.location = ClientLocation;
+			.abstract_goal = "./public/interfaces/abstractGoal.ol";
+			.goal_directory = args[0] + TEST_SUITE_DIRECTORY;
+			.runtime_dir = "runtime"
+		};  
+		initialize@GoalManager( init_gm );
+		init_http.documentRootDirectory = args[0] + TEST_SUITE_DIRECTORY;
+		initialize@HttpFileRetriever( init_http );
 
-	  if ( #args == 1 ) {
-		  first_goal = "init"
-	  } else {
-		  first_goal = args[ 1 ]
-	  };
-	 	  
+		if ( #args == 1 ) {
+			first_goal = "init"
+		} else {
+			first_goal = args[ 1 ]
+		};
+			
 
-	  scope( goal_execution ) {
-		  install( ExecutionFault => nullProcess);
-		  install( GoalNotFound => println@Console("GoalNotFound: " + goal_execution.GoalNotFound.goal_name )() );
-		  gr.name = first_goal;
-		  goal@GoalManager( gr )( grs )
-	  }
+		scope( goal_execution ) {
+			install( ExecutionFault => valueToPrettyString@StringUtils( goal_execution.ExecutionFault )( s ); 
+										println@Console( s )()
+			);
+			install( GoalNotFound => println@Console("GoalNotFound: " + goal_execution.GoalNotFound.goal_name )() );
+			gr.name = first_goal;
+			goal@GoalManager( gr )( grs )
+		}
+	} else {
+		println@Console( "Usage: jolie main_test_suite <test directory> [goal (default=init)]" )(  )
+	}
+	
 }
